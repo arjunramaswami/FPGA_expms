@@ -1,0 +1,13 @@
+build*
+debug*
+bin/
+reports/
+vscode/
+scripts/
+
+tags
+*.DS_Store
+slurm*
+*.swp
+*.vscode
+*.log
