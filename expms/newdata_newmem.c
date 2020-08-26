@@ -81,14 +81,12 @@ int main(int argc, const char **argv) {
     timing = fpga_test(N, inp, out, interleaving);
     total_api_time += getTimeinMilliseconds() - temp_timer;
 
-    /*
-    if(!verify_output(out, inp, N)){
+    if(!verify_output(inp, out, N)){
       fprintf(stderr, "Verification Failed \n");
       free(inp);
       free(out);
       return EXIT_FAILURE;
     }
-    */
 
     if(timing.valid == 0){
       fprintf(stderr, "Invalid execution, timing found to be 0\n");

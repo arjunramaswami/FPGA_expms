@@ -85,6 +85,24 @@ void display_measures(double total_api_time, double pcie_rd, double pcie_wr, dou
 }
 
 /**
+ * \brief  verify if output is the same as input
+ * \param  inp, out: array of complex single precision floats of size N
+ * \param  N: size of the arrays
+ * \return false if not the same
+ */
+bool verify_output(float2 *inp, float2 *out, unsigned N){
+
+  for(size_t i = 0; i < N; i++){
+    if( (inp[i].x != out[i].x) || (inp[i].y != out[i].y)){
+      return false;
+    }
+  }
+
+  return true;
+
+}
+
+/**
  * \brief  compute walltime in milliseconds
  * \return time in milliseconds
  */

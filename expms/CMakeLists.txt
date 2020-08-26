@@ -4,7 +4,7 @@ project(expms VERSION 0.1
             DESCRIPTION "Experiments code that make use of the api"
             LANGUAGES C CXX)
 
-set(examples new_data reuse_data)
+set(examples newdata_newmem newdata_samemem reusedata_samemem)
 
 # create a target for each of the example 
 foreach(example ${examples})
@@ -18,7 +18,7 @@ foreach(example ${examples})
       
   target_include_directories(${example}
       PRIVATE  ${IntelFPGAOpenCL_INCLUDE_DIRS}
-                "${CMAKE_SOURCE_DIR}/extern/argparse"
+                "${argparse_SOURCE_DIR}"
                 common)
     
   target_link_libraries(${example}

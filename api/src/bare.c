@@ -176,23 +176,13 @@ fpga_t fpga_test(unsigned N, float2 *inp, float2 *out, bool interleaving){
 
   queue_setup();
 
-  cl_mem_flags flagbuf1, flagbuf2;
-  if(interleaving){
-    flagbuf1 = CL_MEM_READ_WRITE;
-    flagbuf2 = CL_MEM_READ_WRITE;
-  }
-  else{
-    flagbuf1 = CL_MEM_READ_ONLY | CL_CHANNEL_1_INTELFPGA;
-    flagbuf2 = CL_MEM_WRITE_ONLY | CL_CHANNEL_2_INTELFPGA;
-  }
+  cl_mem_flags flagbuf;
+  flagbuf = CL_MEM_READ_WRITE;
    
   // Device memory buffers
-  cl_mem d_inData, d_outData;
-  d_inData = clCreateBuffer(context, flagbuf1, sizeof(float2) * num_pts, NULL, &status);
+  cl_mem d_inData;
+  d_inData = clCreateBuffer(context, flagbuf, sizeof(float2) * num_pts, NULL, &status);
   checkError(status, "Failed to allocate input device buffer\n");
-
-  d_outData = clCreateBuffer(context, flagbuf2, sizeof(float2) * num_pts, NULL, &status);
-  checkError(status, "Failed to allocate output device buffer\n");
 
  // Copy data from host to device
   test_time.pcie_write_t = getTimeinMilliSec();
@@ -227,7 +217,7 @@ fpga_t fpga_test(unsigned N, float2 *inp, float2 *out, bool interleaving){
   */
   // Copy results from device to host
   test_time.pcie_read_t = getTimeinMilliSec();
-  status = clEnqueueReadBuffer(queue1, d_outData, CL_TRUE, 0, sizeof(float2) * num_pts, out, 0, NULL, NULL);
+  status = clEnqueueReadBuffer(queue1, d_inData, CL_TRUE, 0, sizeof(float2) * num_pts, out, 0, NULL, NULL);
 
   status = clFinish(queue1);
   checkError(status, "failed to finish reading buffer using PCIe");
@@ -241,8 +231,6 @@ fpga_t fpga_test(unsigned N, float2 *inp, float2 *out, bool interleaving){
 
   if (d_inData)
   	clReleaseMemObject(d_inData);
-  if (d_outData) 
-	  clReleaseMemObject(d_outData);
 
   /*
   if(test_kernel) 
