@@ -8,7 +8,7 @@
 #include <CL/cl_ext_intelfpga.h> // to disable interleaving & transfer data to specific banks - CL_CHANNEL_1_INTELFPGA
 #include "CL/opencl.h"
 
-#include "fftfpga/fftfpga.h"
+#include "bare.h"
 #include "svm.h"
 #include "opencl_utils.h"
 #include "misc.h"
@@ -19,10 +19,8 @@ static cl_platform_id platform = NULL;
 static cl_device_id *devices;
 static cl_device_id device = NULL;
 static cl_context context = NULL;
-static cl_program program = NULL;
-static cl_command_queue queue1 = NULL, queue2 = NULL, queue3 = NULL;
-static cl_command_queue queue4 = NULL, queue5 = NULL, queue6 = NULL;
-static cl_command_queue queue7 = NULL, queue8 = NULL;
+//static cl_program program = NULL;
+static cl_command_queue queue1 = NULL;
 
 //static int svm_handle;
 static int svm_enabled = 0;
@@ -121,6 +119,7 @@ int fpga_initialize(const char *platform_name, const char *path, int use_svm){
   printf("\tGetting program binary from path %s ...\n", path);
 #endif
   // Create the program.
+  /*
   program = getProgramWithBinary(context, &device, 1, path);
   if(program == NULL) {
     fprintf(stderr, "Failed to create program\n");
@@ -134,6 +133,7 @@ int fpga_initialize(const char *platform_name, const char *path, int use_svm){
   // Build the program that was just created.
   status = clBuildProgram(program, 0, NULL, "", NULL, NULL);
   checkError(status, "Failed to build program");
+  */
 
   return 0;
 }
@@ -146,8 +146,10 @@ void fpga_final(){
 #ifdef VERBOSE
   printf("\tCleaning up FPGA resources ...\n");
 #endif
+  /*
   if(program) 
     clReleaseProgram(program);
+    */
   if(context)
     clReleaseContext(context);
   free(devices);
@@ -160,9 +162,9 @@ void fpga_final(){
  * \param  out  : float2 pointer to output data of size [N * N]
  * \return fpga_t : time taken in milliseconds for data transfers and execution
  */
-fpga_t fpga_(unsigned N, float2 *inp, float2 *out, bool interleaving){
+fpga_t fpga_test(unsigned N, float2 *inp, float2 *out, bool interleaving){
   fpga_t test_time = {0.0, 0.0, 0.0, 0};
-  cl_kernel test_kernel = NULL;
+  //cl_kernel test_kernel = NULL;
 
   cl_int status = 0;
   size_t num_pts = N;
@@ -183,7 +185,7 @@ fpga_t fpga_(unsigned N, float2 *inp, float2 *out, bool interleaving){
     flagbuf1 = CL_MEM_READ_ONLY | CL_CHANNEL_1_INTELFPGA;
     flagbuf2 = CL_MEM_WRITE_ONLY | CL_CHANNEL_2_INTELFPGA;
   }
-  
+   
   // Device memory buffers
   cl_mem d_inData, d_outData;
   d_inData = clCreateBuffer(context, flagbuf1, sizeof(float2) * num_pts, NULL, &status);
@@ -200,7 +202,9 @@ fpga_t fpga_(unsigned N, float2 *inp, float2 *out, bool interleaving){
   status = clFinish(queue1);
   checkError(status, "failed to finish");
 
-  test_time.pcie_write_t = getTimeinMilliSec() - test_time.pcie_write_t;
+  double temp_write = getTimeinMilliSec();
+  //printf("Write before - %lf, Write after - %lf \n", test_time.pcie_write_t, temp_write);
+  test_time.pcie_write_t = temp_write - test_time.pcie_write_t;
   checkError(status, "Failed to copy data to device");
 
   /*
@@ -228,7 +232,9 @@ fpga_t fpga_(unsigned N, float2 *inp, float2 *out, bool interleaving){
   status = clFinish(queue1);
   checkError(status, "failed to finish reading buffer using PCIe");
 
-  test_time.pcie_read_t = getTimeinMilliSec() - test_time.pcie_read_t;
+  double temp_read = getTimeinMilliSec();
+  //printf("Read before - %lf, Read after - %lf \n", test_time.pcie_read_t, temp_read);
+  test_time.pcie_read_t = temp_read - test_time.pcie_read_t;
   checkError(status, "Failed to copy data from device");
 
   queue_cleanup();

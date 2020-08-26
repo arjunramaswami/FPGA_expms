@@ -17,13 +17,14 @@ static const char *const usage[] = {
 };
 
 int main(int argc, const char **argv) {
-  unsigned N = 1, iter = 1, 
+  unsigned N = 1, iter = 1; 
+  int use_svm = 0;
   bool interleaving = false;
   char *path = "test.aocx";
   const char *platform;
-  fpga_t timing = {0.0, 0.0, 0.0, 0};
+  
   double avg_rd = 0.0, avg_wr = 0.0, avg_exec = 0.0;
-  double temp_timer = 0.0, total_api_time = 0.0;
+  double total_api_time = 0.0;
   bool status = true, use_emulator = false;
 
   struct argparse_option options[] = {
@@ -43,7 +44,7 @@ int main(int argc, const char **argv) {
   argc = argparse_parse(&argparse, argc, argv);
 
   // Print to console the configuration chosen to execute during runtime
-  print_config(N, iter);
+  print_config(N, iter, interleaving);
 
   if(use_emulator){
     platform = "Intel(R) FPGA Emulation Platform for OpenCL(TM)";
@@ -56,12 +57,13 @@ int main(int argc, const char **argv) {
   
   int isInit = fpga_initialize(platform, path, use_svm);
   if(isInit != 0){
-    fprintf(stderr, "FPGA initialization error\n");
+    fprintf(stderr, "FPGA initialization error %d\n", isInit);
     return EXIT_FAILURE;
   }
 
   for(size_t i = 0; i < iter; i++){
-
+    fpga_t timing = {0.0, 0.0, 0.0, 0};
+    double temp_timer = 0.0;
     // create and destroy data every iteration
     size_t inp_sz = sizeof(float2) * N;
     float2 *inp = (float2*)fpgaf_complex_malloc(inp_sz);
@@ -76,7 +78,7 @@ int main(int argc, const char **argv) {
     }
 
     temp_timer = getTimeinMilliseconds();
-    timing = fpga(N, inp, out, interleaving);
+    timing = fpga_test(N, inp, out, interleaving);
     total_api_time += getTimeinMilliseconds() - temp_timer;
 
     /*
@@ -89,7 +91,7 @@ int main(int argc, const char **argv) {
     */
 
     if(timing.valid == 0){
-      fprintf(stderr, "Invalid execution, timing found to be 0");
+      fprintf(stderr, "Invalid execution, timing found to be 0\n");
       free(inp);
       free(out);
       return EXIT_FAILURE;

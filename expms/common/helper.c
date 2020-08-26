@@ -17,35 +17,15 @@
  * \param  N   : number of points in the array
  * \return true if successful
  */
-bool fftf_create_data(float2 *inp, int N){
+bool create_data(float2 *inp, unsigned N){
 
   if(inp == NULL || N <= 0){
     return false;
   }
 
-  for(int i = 0; i < N; i++){
+  for(size_t i = 0; i < N; i++){
     inp[i].x = (float)((float)rand() / (float)RAND_MAX);
     inp[i].y = (float)((float)rand() / (float)RAND_MAX);
-  }
-
-  return true;
-}
-
-/**
- * \brief  create random double precision complex floating point values  
- * \param  inp : pointer to double2 data of size N 
- * \param  N   : number of points in the array
- * \return true if successful
- */
-bool fft_create_data(double2 *inp, int N){
-
-  if(inp == NULL || N <= 0 || N > 1024){
-    return false;
-  }
-
-  for(int i = 0; i < N; i++){
-    inp[i].x = (double)((double)rand() / (double)RAND_MAX);
-    inp[i].y = (double)((double)rand() / (double)RAND_MAX);
   }
 
   return true;
@@ -57,13 +37,14 @@ bool fft_create_data(double2 *inp, int N){
  * \param  dim: number of dimensions of size
  * \param  iter: number of iterations of each transformation (if BATCH mode)
  */
-void print_config(unsigned N, unsigned iter){
+void print_config(unsigned N, unsigned iter, bool interleaving){
   printf("\n------------------------------------------\n");
   printf("Test Configuration: \n");
   printf("--------------------------------------------\n");
   printf("Type               = Complex to Complex\n");
   printf("Points             = %d\n", N);
   printf("Iterations         = %d\n", iter);
+  printf("Interleaving       = %d\n", iter);
   printf("--------------------------------------------\n\n");
 }
 
@@ -85,24 +66,22 @@ void display_measures(double total_api_time, double pcie_rd, double pcie_wr, dou
   double pcie_read = pcie_rd / iter;
   double pcie_write = pcie_wr / iter;
   double exec = exec_t / iter;
-
-  double gpoints_per_sec = (N  / (exec * 1e-3)) * 1e-9;
-  double gBytes_per_sec = 0.0;
-
-  gBytes_per_sec =  gpoints_per_sec * 8; // bytes
+  unsigned data_sz = N * 8;
+  double pcie_rd_bandwidth = data_sz * 1e-9 / (pcie_read * 1e-3);
+  double pcie_wr_bandwidth = data_sz  * 1e-9 / (pcie_write * 1e-3);
 
   printf("\n------------------------------------------\n");
   printf("Measurements \n");
   printf("--------------------------------------------\n");
-  printf("Points             = %d\n", N);
-  printf("Iterations         = %d\n", iter);
-
-  printf("%s", iter>1 ? "Average Measurements of iterations\n":"");
-  printf("PCIe Write         = %.2lfms\n", pcie_write);
-  printf("Kernel Execution   = %.2lfms\n", exec);
-  printf("PCIe Read          = %.2lfms\n", pcie_read);
-  printf("Total              = %.2lfms\n", pcie_read + exec + pcie_write);
-  printf("API runtime        = %.2lfms\n", avg_api_time);
+  printf("Iterations             = %d\n", iter);
+  printf("Points                 = %d\n", N);
+  printf("Data Size              = %u Bytes\n", data_sz);
+  printf("PCIe Write Latency     = %.5lfms\n", pcie_write);
+  printf("PCIe Read Latency      = %.5lfms\n", pcie_read);
+  printf("PCIe Write Bandwidth   = %.5lf GB/s\n", pcie_wr_bandwidth);
+  printf("PCIe Read Bandwidth    = %.5lf GB/s\n", pcie_rd_bandwidth);
+  printf("Average Exec Time      = %.5lfms\n", exec);
+  printf("Average API Time       = %.5lfms\n", avg_api_time);
 }
 
 /**

@@ -8,6 +8,7 @@
 #ifndef BARE_H
 #define BARE_H
 
+#include<stdbool.h>
 /**
  * Single Precision Complex Floating Point Data Structure
  */
@@ -66,5 +67,7 @@ extern void* fpga_complex_malloc(size_t sz);
  * @return void ptr or NULL
  */
 extern void* fpgaf_complex_malloc(size_t sz);
+
+extern fpga_t fpga_test(unsigned N, float2 *inp, float2 *out, bool interleaving);
 
 #endif
