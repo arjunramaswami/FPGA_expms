@@ -55,7 +55,7 @@ int main(int argc, const char **argv) {
     //platform = "Intel(R) FPGA";
   }
   
-  int isInit = fpga_initialize(platform, path, use_svm);
+  int isInit = fpga_initialize_withBuf(platform, path, use_svm, N);
   if(isInit != 0){
     fprintf(stderr, "FPGA initialization error %d\n", isInit);
     return EXIT_FAILURE;
@@ -66,12 +66,11 @@ int main(int argc, const char **argv) {
   float2 *inp = (float2*)fpgaf_complex_malloc(inp_sz);
   float2 *out = (float2*)fpgaf_complex_malloc(inp_sz);
 
-  status = create_data(inp, N);
-
   for(size_t i = 0; i < iter; i++){
     fpga_t timing = {0.0, 0.0, 0.0, 0};
     double temp_timer = 0.0;
 
+    status = create_data(inp, N);
     if(!status){
       fprintf(stderr, "Error in Data Creation \n");
       free(inp);
@@ -80,7 +79,7 @@ int main(int argc, const char **argv) {
     }
 
     temp_timer = getTimeinMilliseconds();
-    timing = fpga_test(N, inp, out, interleaving);
+    timing = fpga_test_bufPersist(N, inp, out, interleaving);
     total_api_time += getTimeinMilliseconds() - temp_timer;
 
     if(!verify_output(inp, out, N)){
@@ -113,7 +112,7 @@ int main(int argc, const char **argv) {
   free(out);
 
   // destroy fpga state
-  fpga_final();
+  fpga_final_withBuf();
 
   // display performance measures
   display_measures(total_api_time, avg_rd, avg_wr, avg_exec, N, iter);

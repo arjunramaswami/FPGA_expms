@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdbool.h>
 #define CL_VERSION_2_0
 #include <CL/cl_ext_intelfpga.h> // to disable interleaving & transfer data to specific banks - CL_CHANNEL_1_INTELFPGA
 #include "CL/opencl.h"
@@ -21,6 +22,7 @@ static cl_device_id device = NULL;
 static cl_context context = NULL;
 //static cl_program program = NULL;
 static cl_command_queue queue1 = NULL;
+static cl_mem d_inData_persist = NULL;
 
 //static int svm_handle;
 static int svm_enabled = 0;
@@ -71,7 +73,7 @@ void* fpgaf_complex_malloc(size_t sz){
           -5 Device does not support required SVM
 
  */
-int fpga_initialize(const char *platform_name, const char *path, int use_svm){
+int fpga_initialize(const char *platform_name, const char *path, bool use_svm){
   cl_int status = 0;
 
 #ifdef VERBOSE
@@ -138,6 +140,9 @@ int fpga_initialize(const char *platform_name, const char *path, int use_svm){
   return 0;
 }
 
+
+
+
 /** 
  * @brief Release FPGA Resources
  */
@@ -154,6 +159,9 @@ void fpga_final(){
     clReleaseContext(context);
   free(devices);
 }
+
+
+
 
 /**
  * \brief  compute an out-of-place single precision complex 2D-FFT using the BRAM of the FPGA
@@ -240,6 +248,121 @@ fpga_t fpga_test(unsigned N, float2 *inp, float2 *out, bool interleaving){
   test_time.valid = 1;
   return test_time;
 }
+
+int fpga_initialize_withBuf(const char *platform_name, const char *path, bool use_svm, unsigned N){
+  cl_int status = 0;
+
+#ifdef VERBOSE
+  printf("\tInitializing FPGA ...\n");
+#endif
+
+  // Path to binary missing
+  if(path == NULL || strlen(path) == 0){
+    return -1;
+  }
+
+  // Check if this has to be sent as a pointer or value
+  // Get the OpenCL platform.
+  platform = findPlatform(platform_name);
+  // Unable to find given OpenCL platform
+  if(platform == NULL){
+    return -2;
+  }
+  // Query the available OpenCL devices.
+  cl_uint num_devices;
+  devices = getDevices(platform, CL_DEVICE_TYPE_ALL, &num_devices);
+  // Unable to find device for the OpenCL platform
+  if(devices == NULL){
+    return -3;
+  }
+
+  // use the first device.
+  device = devices[0];
+
+  if(use_svm){
+    if(!check_valid_svm_device(device)){
+      return -5;
+    }
+    else{
+      printf("Supports SVM \n");
+      svm_enabled = 1;
+    }
+  }
+
+  // Create the context.
+  context = clCreateContext(NULL, 1, &device, NULL, NULL, &status);
+  checkError(status, "Failed to create context");
+
+  cl_mem_flags flagbuf;
+  flagbuf = CL_MEM_READ_WRITE;
+  size_t num_pts = N;
+   
+  // Device memory buffers
+  d_inData_persist = clCreateBuffer(context, flagbuf, sizeof(float2) * num_pts, NULL, &status);
+  checkError(status, "Failed to allocate input device buffer\n");
+
+  return 0;
+}
+
+
+/**
+ * \brief  compute an out-of-place single precision complex 2D-FFT using the BRAM of the FPGA
+ * \param  N    : integer pointer to size of FFT2d  
+ * \param  inp  : float2 pointer to input data of size [N * N]
+ * \param  out  : float2 pointer to output data of size [N * N]
+ * \return fpga_t : time taken in milliseconds for data transfers and execution
+ */
+fpga_t fpga_test_bufPersist(unsigned N, float2 *inp, float2 *out, bool interleaving){
+  fpga_t test_time = {0.0, 0.0, 0.0, 0};
+
+  cl_int status = 0;
+  size_t num_pts = N;
+
+  // if N is not a power of 2
+  if(inp == NULL || out == NULL || ( (N & (N-1)) !=0)){
+    return test_time;
+  }
+
+  queue_setup();
+
+ // Copy data from host to device
+  test_time.pcie_write_t = getTimeinMilliSec();
+
+  status = clEnqueueWriteBuffer(queue1, d_inData_persist, CL_TRUE, 0, sizeof(float2) * num_pts, inp, 0, NULL, NULL);
+
+  status = clFinish(queue1);
+  checkError(status, "failed to finish");
+
+  double temp_write = getTimeinMilliSec();
+  test_time.pcie_write_t = temp_write - test_time.pcie_write_t;
+  checkError(status, "Failed to copy data to device");
+
+  test_time.pcie_read_t = getTimeinMilliSec();
+  status = clEnqueueReadBuffer(queue1, d_inData_persist, CL_TRUE, 0, sizeof(float2) * num_pts, out, 0, NULL, NULL);
+
+  status = clFinish(queue1);
+  checkError(status, "failed to finish reading buffer using PCIe");
+
+  double temp_read = getTimeinMilliSec();
+  test_time.pcie_read_t = temp_read - test_time.pcie_read_t;
+  checkError(status, "Failed to copy data from device");
+
+  queue_cleanup();
+
+  test_time.valid = 1;
+  return test_time;
+}
+
+void fpga_final_withBuf(){
+
+  if (d_inData_persist)
+  	clReleaseMemObject(d_inData_persist);
+
+  if(context)
+    clReleaseContext(context);
+  free(devices);
+}
+
 
 /**
  * \brief Create a command queue for each kernel

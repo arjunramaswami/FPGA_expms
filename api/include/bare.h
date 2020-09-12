@@ -47,7 +47,7 @@ typedef struct fpga_timing {
           -4 Failed to create program, file not found in path
           -5 Device does not support required SVM
  */
-extern int fpga_initialize(const char *platform_name, const char *path, int use_svm);
+extern int fpga_initialize(const char *platform_name, const char *path, bool use_svm);
 
 /** 
  * @brief Release FPGA Resources
@@ -69,5 +69,26 @@ extern void* fpga_complex_malloc(size_t sz);
 extern void* fpgaf_complex_malloc(size_t sz);
 
 extern fpga_t fpga_test(unsigned N, float2 *inp, float2 *out, bool interleaving);
+
+/** 
+ * @brief Initialize FPGA
+ * @param platform_name: name of the OpenCL platform
+ * @param path         : path to binary
+ * @param use_svm      : 1 if true 0 otherwise
+ * @return 0 if successful 
+          -1 Path to binary missing
+          -2 Unable to find platform passed as argument
+          -3 Unable to find devices for given OpenCL platform
+          -4 Failed to create program, file not found in path
+          -5 Device does not support required SVM
+ */
+extern int fpga_initialize_withBuf(const char *platform_name, const char *path, bool use_svm, unsigned N);
+
+/** 
+ * @brief Release FPGA Resources
+ */
+extern void fpga_final_withBuf();
+
+extern fpga_t fpga_test_bufPersist(unsigned N, float2 *inp, float2 *out, bool interleaving);
 
 #endif

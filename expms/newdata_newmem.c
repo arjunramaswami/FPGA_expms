@@ -18,7 +18,7 @@ static const char *const usage[] = {
 
 int main(int argc, const char **argv) {
   unsigned N = 1, iter = 1; 
-  int use_svm = 0;
+  bool use_svm = false;
   bool interleaving = false;
   char *path = "test.aocx";
   const char *platform;
