@@ -8,8 +8,7 @@
   - Same device buffer between iterations for both host side buffer cases
 - memalign
   - mem align changed for new mem allocation with new data considering this is
-    the problem scenario
+    the problem scenario.
 - svm3DFFT
-  - first and second phase split measurements for both host side buffer cases 
+  - first and second phase split measurements for both host side buffer cases.
 - svm1DFFT
-  - 

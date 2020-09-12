@@ -1,0 +1,105 @@
+
+------------------------------------------
+FFT Configuration: 
+--------------------------------------------
+Type               = Complex to Complex
+Points             = 256^3 
+Precision          = Single 
+Direction          = Forward 
+Placement          = In Place    
+Batch              = 1 
+Iterations         = 10 
+Transpose          = DDR 
+Interleaving       = No 
+--------------------------------------------
+
+Initialized BSP
+Supports SVM 
+Initialized BSP
+First half: 10.937372 Second half: 65.079042
+
+Iter: 0
+	PCIe Rd: 0.000000ms
+	Kernel: 76.016613ms
+	PCIe Wr: 0.000000ms
+
+First half: 10.913095 Second half: 64.385925
+
+Iter: 1
+	PCIe Rd: 0.000000ms
+	Kernel: 75.299184ms
+	PCIe Wr: 0.000000ms
+
+First half: 10.888259 Second half: 65.956863
+
+Iter: 2
+	PCIe Rd: 0.000000ms
+	Kernel: 76.845290ms
+	PCIe Wr: 0.000000ms
+
+First half: 10.904967 Second half: 63.431838
+
+Iter: 3
+	PCIe Rd: 0.000000ms
+	Kernel: 74.336970ms
+	PCIe Wr: 0.000000ms
+
+First half: 10.929334 Second half: 65.235938
+
+Iter: 4
+	PCIe Rd: 0.000000ms
+	Kernel: 76.165425ms
+	PCIe Wr: 0.000000ms
+
+First half: 10.903532 Second half: 64.467037
+
+Iter: 5
+	PCIe Rd: 0.000000ms
+	Kernel: 75.370724ms
+	PCIe Wr: 0.000000ms
+
+First half: 10.883549 Second half: 65.279391
+
+Iter: 6
+	PCIe Rd: 0.000000ms
+	Kernel: 76.163101ms
+	PCIe Wr: 0.000000ms
+
+First half: 10.896223 Second half: 63.526010
+
+Iter: 7
+	PCIe Rd: 0.000000ms
+	Kernel: 74.422400ms
+	PCIe Wr: 0.000000ms
+
+First half: 10.924011 Second half: 65.295218
+
+Iter: 8
+	PCIe Rd: 0.000000ms
+	Kernel: 76.219384ms
+	PCIe Wr: 0.000000ms
+
+First half: 10.923490 Second half: 64.488500
+
+Iter: 9
+	PCIe Rd: 0.000000ms
+	Kernel: 75.412063ms
+	PCIe Wr: 0.000000ms
+
+
+
+------------------------------------------
+Measurements 
+--------------------------------------------
+Points             = 256^3 
+Precision          = Single
+Direction          = Forward
+Iterations         = 10
+Batch              = 1
+Average Measurements of iterations
+PCIe Write         = 0.00ms
+Kernel Execution   = 75.63ms
+PCIe Read          = 0.00ms
+Total              = 75.63ms
+Throughput         = 24.79GFLOPS/s | 1.65 GB/s
+API runtime        = 406.82ms

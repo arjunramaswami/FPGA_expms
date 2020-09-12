@@ -1,0 +1,35 @@
+
+------------------------------------------
+Test Configuration: 
+--------------------------------------------
+Type               = Complex to Complex
+Points             = 262144
+Iterations         = 2
+Interleaving       = 2
+--------------------------------------------
+
+Num of Platforms found - 1
+  0 - intel(r) fpga sdk for opencl(tm) 
+Iter: 0
+	PCIe Rd: 0.450597ms
+	Kernel: 0.000000ms
+	PCIe Wr: 0.530136ms
+
+Iter: 1
+	PCIe Rd: 1.041062ms
+	Kernel: 0.000000ms
+	PCIe Wr: 0.465674ms
+
+
+------------------------------------------
+Measurements 
+--------------------------------------------
+Iterations             = 2
+Points                 = 262144
+Data Size              = 2097152 Bytes
+PCIe Write Latency     = 0.49790ms
+PCIe Read Latency      = 0.74583ms
+PCIe Write Bandwidth   = 4.21195 GB/s
+PCIe Read Bandwidth    = 2.81184 GB/s
+Average Exec Time      = 0.00000ms
+Average API Time       = 1.50984ms
