@@ -1,8 +1,6 @@
 build*
 debug*
 bin/
-reports/
-vscode/
 scripts/
 
 tags
@@ -10,4 +8,3 @@ tags
 slurm*
 *.swp
 *.vscode
-*.log
