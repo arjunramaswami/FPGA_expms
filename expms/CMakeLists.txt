@@ -4,7 +4,7 @@ project(expms VERSION 0.1
             DESCRIPTION "Experiments code that make use of the api"
             LANGUAGES C CXX)
 
-set(examples newdata_newmem newdata_newmem_samedevbuf newdata_samemem newdata_samemem_samedevbuf reusedata_samemem)
+set(examples newdata_newmem newdata_newmem_samedevbuf newdata_samemem newdata_samemem_samedevbuf reusedata_samemem nonblocking_pcietest)
 
 # create a target for each of the example 
 foreach(example ${examples})

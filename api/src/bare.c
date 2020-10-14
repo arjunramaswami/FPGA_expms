@@ -21,7 +21,7 @@ static cl_device_id *devices;
 static cl_device_id device = NULL;
 static cl_context context = NULL;
 //static cl_program program = NULL;
-static cl_command_queue queue1 = NULL;
+static cl_command_queue queue1 = NULL, queue2 = NULL, queue3 = NULL;
 static cl_mem d_inData_persist = NULL;
 
 //static int svm_handle;
@@ -140,9 +140,6 @@ int fpga_initialize(const char *platform_name, const char *path, bool use_svm){
   return 0;
 }
 
-
-
-
 /** 
  * @brief Release FPGA Resources
  */
@@ -159,9 +156,6 @@ void fpga_final(){
     clReleaseContext(context);
   free(devices);
 }
-
-
-
 
 /**
  * \brief  compute an out-of-place single precision complex 2D-FFT using the BRAM of the FPGA
@@ -354,7 +348,6 @@ fpga_t fpga_test_bufPersist(unsigned N, float2 *inp, float2 *out, bool interleav
 }
 
 void fpga_final_withBuf(){
-
   if (d_inData_persist)
   	clReleaseMemObject(d_inData_persist);
 
@@ -372,6 +365,10 @@ void queue_setup(){
   // Create one command queue for each kernel.
   queue1 = clCreateCommandQueue(context, device, CL_QUEUE_PROFILING_ENABLE, &status);
   checkError(status, "Failed to create command queue1");
+  queue2 = clCreateCommandQueue(context, device, CL_QUEUE_PROFILING_ENABLE, &status);
+  checkError(status, "Failed to create command queue1");
+  queue3 = clCreateCommandQueue(context, device, CL_QUEUE_PROFILING_ENABLE, &status);
+  checkError(status, "Failed to create command queue1");
 }
 
 /**
@@ -380,4 +377,140 @@ void queue_setup(){
 void queue_cleanup() {
   if(queue1) 
     clReleaseCommandQueue(queue1);
+  if(queue2) 
+    clReleaseCommandQueue(queue2);
+  if(queue3) 
+    clReleaseCommandQueue(queue3);
+}
+
+/**
+ * \brief  compute an out-of-place single precision complex 2D-FFT using the BRAM of the FPGA
+ * \param  N    : integer pointer to size of FFT2d  
+ * \param  inp  : float2 pointer to input data of size [N * N]
+ * \param  out  : float2 pointer to output data of size [N * N]
+ * \param  how_many : number of batch iterations
+ * \return fpga_t : time taken in milliseconds for data transfers and execution
+ */
+fpga_t nb_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleaving, unsigned how_many){
+  fpga_t test_time = {0.0, 0.0, 0.0, 0};
+  cl_mem d_inoutData[2];
+  cl_int status = 0;
+
+  // if N is not a power of 2
+  if(inp == NULL || out == NULL || ( (N & (N-1)) !=0) || (how_many <= 1)){
+    return test_time;
+  }
+
+  queue_setup();
+
+  // Device Buffers
+  d_inoutData[0] = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_CHANNEL_1_INTELFPGA, sizeof(float2) * N, NULL, &status);
+  checkError(status, "Failed to allocate input device buffer\n");
+
+  d_inoutData[1] = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_CHANNEL_2_INTELFPGA, sizeof(float2) * N, NULL, &status);
+  checkError(status, "Failed to allocate input device buffer\n");
+
+  cl_event writeEvent[1];
+
+  test_time.exec_t = getTimeinMilliSec();
+
+  clEnqueueWriteBuffer(queue1, d_inoutData[0], CL_TRUE, 0, sizeof(float2) * N, inp, 0, NULL, NULL);
+  clFinish(queue1);
+
+  for(size_t i = 1; i < how_many; i++){
+    clEnqueueWriteBuffer(queue1, d_inoutData[i%2], CL_FALSE, 0, sizeof(float2) * N, &inp[i * N], 0, NULL, &writeEvent[0]);
+
+    status = clEnqueueReadBuffer(queue2, d_inoutData[(i-1)%2], CL_FALSE, 0, sizeof(float2) * N, &out[(i-1) * N], 0, NULL, &writeEvent[1]);
+    checkError(status, "Failed to read");
+
+    clFinish(queue1);
+    clFinish(queue2);
+
+    clWaitForEvents(2, writeEvent);
+    clReleaseEvent(writeEvent[0]);
+    clReleaseEvent(writeEvent[1]);
+  }
+
+  status = clEnqueueReadBuffer(queue1, d_inoutData[(how_many-1) % 2], CL_FALSE, 0, sizeof(float2) * N, &out[(how_many - 1) * N], 0, NULL,  &writeEvent[0]);
+  checkError(status, "Failed to read");
+
+  clFinish(queue1);
+  clWaitForEvents(1, &writeEvent[0]);
+  clReleaseEvent(writeEvent[0]);
+
+  test_time.exec_t = getTimeinMilliSec() - test_time.exec_t;
+  checkError(status, "Failed to copy data from device");
+
+  queue_cleanup();
+
+  if (d_inoutData[0])
+  	clReleaseMemObject(d_inoutData[0]);
+  if (d_inoutData[1])
+  	clReleaseMemObject(d_inoutData[1]);
+
+  test_time.valid = 1;
+  return test_time;
+}
+
+/**
+ * \brief nonblocking PCIe memory transfer test using event based
+ * synchronization
+ * \param  N    : size of data
+ * \param  inp  : float2 pointer to input data of size [N * N]
+ * \param  out  : float2 pointer to output data of size [N * N]
+ * \param  how_many : number of batch iterations
+ * \return fpga_t : time taken in milliseconds for data transfers and execution
+ */
+fpga_t nb_event_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleaving, unsigned how_many){
+  fpga_t test_time = {0.0, 0.0, 0.0, 0};
+  cl_mem d_inoutData[2];
+  cl_int status = 0;
+
+  // if N is not a power of 2
+  if(inp == NULL || out == NULL || ( (N & (N-1)) !=0) || (how_many <= 1)){
+    return test_time;
+  }
+
+  queue_setup();
+
+  // Device Buffers
+  d_inoutData[0] = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_CHANNEL_1_INTELFPGA, sizeof(float2) * N, NULL, &status);
+  checkError(status, "Failed to allocate input device buffer\n");
+
+  d_inoutData[1] = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_CHANNEL_2_INTELFPGA, sizeof(float2) * N, NULL, &status);
+  checkError(status, "Failed to allocate input device buffer\n");
+
+  cl_event writeEvent[2], readEvent[2];
+
+  test_time.exec_t = getTimeinMilliSec();
+
+  for(size_t i = 0; i < how_many; i++){
+    if(i < 2){
+      status = clEnqueueWriteBuffer(queue1, d_inoutData[i%2], CL_FALSE, 0, sizeof(float2) * N, &inp[i * N], 0, NULL, &writeEvent[i]);
+      checkError(status, "Failed to write to DDR");
+      clFlush(queue1);
+    }
+    else{
+      status = clEnqueueWriteBuffer(queue1, d_inoutData[i%2], CL_FALSE, 0, sizeof(float2) * N, &inp[i * N], 1, &readEvent[i-2], &writeEvent[i]);
+      checkError(status, "Failed to write to DDR");
+      clFlush(queue1);
+    }
+
+    status = clEnqueueReadBuffer(queue2, d_inoutData[i%2], CL_FALSE, 0, sizeof(float2) * N, &out[i * N], 1, &writeEvent[i], &readEvent[i]);
+    checkError(status, "Failed to read");
+    clFlush(queue2);
+  }
+
+  test_time.exec_t = getTimeinMilliSec() - test_time.exec_t;
+  checkError(status, "Failed to copy data from device");
+
+  queue_cleanup();
+
+  if (d_inoutData[0])
+  	clReleaseMemObject(d_inoutData[0]);
+  if (d_inoutData[1])
+  	clReleaseMemObject(d_inoutData[1]);
+
+  test_time.valid = 1;
+  return test_time;
 }
