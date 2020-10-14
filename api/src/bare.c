@@ -384,12 +384,13 @@ void queue_cleanup() {
 }
 
 /**
- * \brief  compute an out-of-place single precision complex 2D-FFT using the BRAM of the FPGA
- * \param  N    : integer pointer to size of FFT2d  
- * \param  inp  : float2 pointer to input data of size [N * N]
- * \param  out  : float2 pointer to output data of size [N * N]
+ * \brief nonblocking PCIe memory transfer test using explicit event based
+ * synchronization
+ * \param  N    : size of data
+ * \param  inp  : float2 pointer to input data of size N * how_many
+ * \param  out  : float2 pointer to output data of size N * how_many
  * \param  how_many : number of batch iterations
- * \return fpga_t : time taken in milliseconds for data transfers and execution
+ * \return fpga_t : time taken in milliseconds for data transfers
  */
 fpga_t nb_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleaving, unsigned how_many){
   fpga_t test_time = {0.0, 0.0, 0.0, 0};
@@ -439,7 +440,6 @@ fpga_t nb_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleaving, uns
   clReleaseEvent(writeEvent[0]);
 
   test_time.exec_t = getTimeinMilliSec() - test_time.exec_t;
-  checkError(status, "Failed to copy data from device");
 
   queue_cleanup();
 
@@ -453,13 +453,12 @@ fpga_t nb_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleaving, uns
 }
 
 /**
- * \brief nonblocking PCIe memory transfer test using event based
- * synchronization
+ * \brief nonblocking PCIe memory transfer test using wait list events 
  * \param  N    : size of data
- * \param  inp  : float2 pointer to input data of size [N * N]
- * \param  out  : float2 pointer to output data of size [N * N]
+ * \param  inp  : float2 pointer to input data of size N * how_many
+ * \param  out  : float2 pointer to output data of size N * how_many
  * \param  how_many : number of batch iterations
- * \return fpga_t : time taken in milliseconds for data transfers and execution
+ * \return fpga_t : time taken in milliseconds for data transfers
  */
 fpga_t nb_event_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleaving, unsigned how_many){
   fpga_t test_time = {0.0, 0.0, 0.0, 0};
@@ -502,7 +501,6 @@ fpga_t nb_event_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleavin
   }
 
   test_time.exec_t = getTimeinMilliSec() - test_time.exec_t;
-  checkError(status, "Failed to copy data from device");
 
   queue_cleanup();
 
