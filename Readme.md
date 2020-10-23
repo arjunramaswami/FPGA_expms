@@ -18,3 +18,9 @@ make empty_emu
 
 CL_CONTEXT_EMULATOR_DEVICE_INTELFPGA=1 ./nb_event_pcietest -n 134217728 -c 3 -i 2 -p emu_empty/empty.aocx
 ```
+
+[Confluence Link](https://wiki.pc2.uni-paderborn.de/display/~arjunr/Batch+FFT3D+without+SVM)
+
+## ToDo
+
+- interleaved memory transfers in Non-blocking PCIe OpenCL host code
