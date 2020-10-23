@@ -1,0 +1,25 @@
+stages:
+  build
+  test
+
+build_all:
+  stage: build
+  script:
+    echo "Building"
+    module load intelFPGA_pro/20.2.0 nalla_pcie/19.4.0_hpc numlib/FFTW
+    module load devel/CMake
+    rm -rf build && mkdir build && cd build
+    cmake ..
+    make
+    make empty_emu
+
+test_nb_pcie:
+  stage: test
+  script:
+    echo "Testing Non-Blocking PCIe transfers"
+
+test_nb_event_pcie:
+  stage: test
+  script: 
+    echo "Testing Non-Blocking event based PCIe transfers"
+
