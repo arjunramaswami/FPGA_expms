@@ -1,0 +1,14 @@
+
+------------------------------------------
+Test Configuration: 
+--------------------------------------------
+Type               = Complex to Complex
+Points             = 134217728
+Iterations         = 2
+Batch              = 3
+Interleaving       = 2
+--------------------------------------------
+
+Num of Platforms found - 2
+  0 - intel(r) fpga emulation platform for opencl(tm) 
+  1 - intel(r) fpga sdk for opencl(tm) 
