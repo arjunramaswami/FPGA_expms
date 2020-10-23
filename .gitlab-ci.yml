@@ -1,6 +1,6 @@
 stages:
-  build
-  test
+  - build
+  - test
 
 build_all:
   stage: build
