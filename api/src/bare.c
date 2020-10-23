@@ -424,9 +424,6 @@ fpga_t nb_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleaving, uns
     status = clEnqueueReadBuffer(queue2, d_inoutData[(i-1)%2], CL_FALSE, 0, sizeof(float2) * N, &out[(i-1) * N], 0, NULL, &writeEvent[1]);
     checkError(status, "Failed to read");
 
-    clFinish(queue1);
-    clFinish(queue2);
-
     clWaitForEvents(2, writeEvent);
     clReleaseEvent(writeEvent[0]);
     clReleaseEvent(writeEvent[1]);
@@ -435,7 +432,6 @@ fpga_t nb_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleaving, uns
   status = clEnqueueReadBuffer(queue1, d_inoutData[(how_many-1) % 2], CL_FALSE, 0, sizeof(float2) * N, &out[(how_many - 1) * N], 0, NULL,  &writeEvent[0]);
   checkError(status, "Failed to read");
 
-  clFinish(queue1);
   clWaitForEvents(1, &writeEvent[0]);
   clReleaseEvent(writeEvent[0]);
 
@@ -478,13 +474,13 @@ fpga_t nb_event_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleavin
 
   d_inoutData[1] = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_CHANNEL_2_INTELFPGA, sizeof(float2) * N, NULL, &status);
   checkError(status, "Failed to allocate input device buffer\n");
-
+  
   cl_event writeEvent[2], readEvent[2];
 
   test_time.exec_t = getTimeinMilliSec();
 
   for(size_t i = 0; i < how_many; i++){
-    if(i < 2){
+  if(i < 2){
       status = clEnqueueWriteBuffer(queue1, d_inoutData[i%2], CL_FALSE, 0, sizeof(float2) * N, &inp[i * N], 0, NULL, &writeEvent[i]);
       checkError(status, "Failed to write to DDR");
       clFlush(queue1);
@@ -504,10 +500,12 @@ fpga_t nb_event_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleavin
 
   queue_cleanup();
 
+  /*
   if (d_inoutData[0])
   	clReleaseMemObject(d_inoutData[0]);
   if (d_inoutData[1])
   	clReleaseMemObject(d_inoutData[1]);
+  */
 
   test_time.valid = 1;
   return test_time;
