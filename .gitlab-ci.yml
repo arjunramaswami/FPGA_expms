@@ -17,9 +17,12 @@ test_nb_pcie:
   stage: test
   script:
     echo "Testing Non-Blocking PCIe transfers"
+    cd bin
+    CL_CONTEXT_EMULATOR_DEVICE_INTELFPGA=1 ./nb_event_pcietest -n 262144 -c 3 -i 2 -p emu_empty/empty.aocx
 
 test_nb_event_pcie:
   stage: test
   script: 
     echo "Testing Non-Blocking event based PCIe transfers"
-
+    cd bin
+    CL_CONTEXT_EMULATOR_DEVICE_INTELFPGA=1 ./nb_pcietest -n 262144 -c 3 -i 2 -p emu_empty/empty.aocx
