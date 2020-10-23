@@ -2,6 +2,9 @@ stages:
   - build
   - test
 
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
 build_all:
   stage: build
   script:
@@ -12,6 +15,11 @@ build_all:
     cmake ..
     make
     make empty_emu
+
+code_quality:
+  stage: test
+  artifacts:
+    paths: [gl-code-quality-report.json]
 
 test_nb_pcie:
   stage: test
