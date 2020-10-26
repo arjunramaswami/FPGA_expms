@@ -368,7 +368,7 @@ void queue_setup(){
   queue2 = clCreateCommandQueue(context, device, CL_QUEUE_PROFILING_ENABLE, &status);
   checkError(status, "Failed to create command queue1");
   queue3 = clCreateCommandQueue(context, device, CL_QUEUE_PROFILING_ENABLE, &status);
-  checkError(status, "Failed to create command queue1");
+  checkError(status, "Failed to create command queue3");
 }
 
 /**
