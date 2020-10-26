@@ -13,17 +13,19 @@ function(gen_fft_targets)
   foreach(kernel_fname ${ARGN})
 
     set(CL_SRC "${CL_PATH}/${kernel_fname}.cl")
-    set(CL_INCL_DIR "-I${CMAKE_BINARY_DIR}/kernels/common")
-    set(CL_HEADER "${CMAKE_BINARY_DIR}/kernels/common/fft_config.h")
+    #set(CL_INCL_DIR "-I${CMAKE_BINARY_DIR}/kernels/common")
+    #set(CL_HEADER "${CMAKE_BINARY_DIR}/kernels/common/fft_config.h")
+    set(CL_HEADER "")
+    set(CL_INCL_DIR "")
 
     set(EMU_BSTREAM 
-        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/emu_${FFT_SIZE}_${kernel_fname}/${kernel_fname}.aocx")
+        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/emu_${kernel_fname}/${kernel_fname}.aocx")
     set(REP_BSTREAM 
-        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/rep_${FFT_SIZE}_${kernel_fname}/${kernel_fname}.aocr")
+        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/rep_${kernel_fname}/${kernel_fname}.aocr")
     set(PROF_BSTREAM 
-        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/prof_${FFT_SIZE}_${kernel_fname}/${kernel_fname}.aocx")
+        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/prof_${kernel_fname}/${kernel_fname}.aocx")
     set(SYN_BSTREAM 
-        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/syn_${FFT_SIZE}_${kernel_fname}/${kernel_fname}.aocx")
+        "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/syn_${kernel_fname}/${kernel_fname}.aocx")
 
     # Emulation Target
     add_custom_command(OUTPUT ${EMU_BSTREAM}

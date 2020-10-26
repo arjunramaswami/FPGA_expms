@@ -26,6 +26,7 @@ set(PROF_FLAGS "-profile=all" CACHE STRING "AOC profile flags")
 separate_arguments(PROF_FLAGS)
 
 if (INTELFPGAOPENCL_FOUND)
+  add_subdirectory(empty)
 else()
   message(FATAL_ERROR, "Intel FPGA OpenCL SDK not found!")
 endif()

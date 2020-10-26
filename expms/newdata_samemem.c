@@ -17,7 +17,7 @@ static const char *const usage[] = {
 };
 
 int main(int argc, const char **argv) {
-  unsigned N = 1, iter = 1; 
+  unsigned N = 1, iter = 1, batch = 1; 
   bool use_svm = false;
   bool interleaving = false;
   char *path = "test.aocx";
@@ -44,7 +44,7 @@ int main(int argc, const char **argv) {
   argc = argparse_parse(&argparse, argc, argv);
 
   // Print to console the configuration chosen to execute during runtime
-  print_config(N, iter, interleaving);
+  print_config(N, iter, interleaving, batch);
 
   if(use_emulator){
     platform = "Intel(R) FPGA Emulation Platform for OpenCL(TM)";

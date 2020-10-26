@@ -71,6 +71,20 @@ extern void* fpgaf_complex_malloc(size_t sz);
 extern fpga_t fpga_test(unsigned N, float2 *inp, float2 *out, bool interleaving);
 
 /** 
+ * @brief Non blocking PCIe test to determine if full duplex
+ * @param sz  : size_t : size to allocate
+ * @return void ptr or NULL
+ */
+extern fpga_t nb_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleaving, unsigned how_many);
+
+/** 
+ * @brief Non blocking PCIe test to determine if full duplex
+ * @param sz  : size_t : size to allocate
+ * @return void ptr or NULL
+ */
+extern fpga_t nb_event_pcie_test(unsigned N, float2 *inp, float2 *out, bool interleaving, unsigned how_many);
+
+/** 
  * @brief Initialize FPGA
  * @param platform_name: name of the OpenCL platform
  * @param path         : path to binary

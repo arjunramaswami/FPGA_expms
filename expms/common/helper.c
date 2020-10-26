@@ -37,13 +37,14 @@ bool create_data(float2 *inp, unsigned N){
  * \param  dim: number of dimensions of size
  * \param  iter: number of iterations of each transformation (if BATCH mode)
  */
-void print_config(unsigned N, unsigned iter, bool interleaving){
+void print_config(unsigned N, unsigned iter, bool interleaving, unsigned batch){
   printf("\n------------------------------------------\n");
   printf("Test Configuration: \n");
   printf("--------------------------------------------\n");
   printf("Type               = Complex to Complex\n");
   printf("Points             = %d\n", N);
   printf("Iterations         = %d\n", iter);
+  printf("Batch              = %d\n", batch);
   printf("Interleaving       = %d\n", iter);
   printf("--------------------------------------------\n\n");
 }
@@ -93,6 +94,7 @@ void display_measures(double total_api_time, double pcie_rd, double pcie_wr, dou
 bool verify_output(float2 *inp, float2 *out, unsigned N){
 
   for(size_t i = 0; i < N; i++){
+    //printf("%lu - cpu: (%f, %f) fpga: (%f, %f)\n", i, inp[i].x, inp[i].y, out[i].x, out[i].y);
     if( (inp[i].x != out[i].x) || (inp[i].y != out[i].y)){
       return false;
     }

@@ -1,0 +1,682 @@
+{
+    "kernels":
+    {
+        "nodes":
+        [
+            {
+                "type": "kernel",
+                "name": "fetch",
+                "compute_unit": "0",
+                "start_time": "-1",
+                "num_samples": "0",
+                "has_shared_counters": "false",
+                "is_autorun": "false",
+                "children":
+                [
+                    {
+                        "type": "moduleinst",
+                        "name": "i_llvm_fpga_mem_memcoalesce_load_fetch_fpgaunique_5_fetch4",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "160"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__global",
+                            "operation_type": "read",
+                            "coalesced_memory": "true"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_llvm_fpga_mem_memdep_2_fetch8",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "160"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__local",
+                            "operation_type": "write",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_llvm_fpga_mem_unnamed_fetch2_fetch6",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__local",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_llvm_fpga_mem_unnamed_fetch3_fetch13",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__local",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_llvm_fpga_mem_unnamed_fetch4_fetch20",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__local",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_llvm_fpga_mem_unnamed_fetch5_fetch27",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__local",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_llvm_fpga_mem_unnamed_fetch6_fetch34",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__local",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_llvm_fpga_mem_unnamed_fetch7_fetch41",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__local",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_llvm_fpga_mem_unnamed_fetch8_fetch48",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__local",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_llvm_fpga_mem_unnamed_fetch9_fetch55",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__local",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iowr_bl_chanin_0_unnamed_fetch11_fetch12",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "write",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iowr_bl_chanin_1_unnamed_fetch12_fetch13",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "write",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iowr_bl_chanin_2_unnamed_fetch13_fetch14",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "write",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iowr_bl_chanin_3_unnamed_fetch14_fetch15",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "write",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iowr_bl_chanin_4_unnamed_fetch15_fetch16",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "write",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iowr_bl_chanin_5_unnamed_fetch16_fetch17",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "write",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iowr_bl_chanin_6_unnamed_fetch17_fetch18",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "write",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iowr_bl_chanin_7_unnamed_fetch18_fetch19",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "168"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "write",
+                            "coalesced_memory": "false"
+                        }
+                    }
+                ]
+            },
+            {
+                "type": "kernel",
+                "name": "fft1d",
+                "compute_unit": "0",
+                "start_time": "-1",
+                "num_samples": "0",
+                "has_shared_counters": "false",
+                "is_autorun": "false",
+                "children":
+                [
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iord_bl_chanin_0_unnamed_fft1d7_fft1d5",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "217"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iord_bl_chanin_1_unnamed_fft1d8_fft1d6",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "218"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iord_bl_chanin_2_unnamed_fft1d9_fft1d7",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "219"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iord_bl_chanin_3_unnamed_fft1d10_fft1d8",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "220"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iord_bl_chanin_4_unnamed_fft1d11_fft1d9",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "221"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iord_bl_chanin_5_unnamed_fft1d12_fft1d10",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "222"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iord_bl_chanin_6_unnamed_fft1d13_fft1d11",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "223"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_iord_bl_chanin_7_unnamed_fft1d14_fft1d12",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "224"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__channel",
+                            "operation_type": "read",
+                            "coalesced_memory": "false"
+                        }
+                    },
+                    {
+                        "type": "moduleinst",
+                        "name": "i_llvm_fpga_mem_memdep_fft1d16",
+                        "sourcefiles":
+                        [
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "241"
+                            },
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "242"
+                            },
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "243"
+                            },
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "244"
+                            },
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "245"
+                            },
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "246"
+                            },
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "247"
+                            },
+                            {
+                                "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                                "line": "248"
+                            }
+                        ],
+                        "module_inst_details":
+                        {
+                            "mem_type": "__global",
+                            "operation_type": "write",
+                            "coalesced_memory": "true"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "sourcefiles":
+    {
+        "nodes":
+        [
+            {
+                "type": "sourcefiles",
+                "sourcefiles":
+                [
+                    {
+                        "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/build\/kernels\/common\/fft_config.h",
+                        "line": "-1"
+                    },
+                    {
+                        "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft_8.cl",
+                        "line": "-1"
+                    },
+                    {
+                        "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/twid_radix4_8.cl",
+                        "line": "-1"
+                    },
+                    {
+                        "filename": "\/upb\/scratch\/departments\/pc2\/groups\/pc2-mitarbeiter\/arjunr\/opencl\/fft-fpga\/kernels\/fft1d\/fft1d.cl",
+                        "line": "-1"
+                    }
+                ]
+            }
+        ]
+    },
+    "boards":
+    {
+        "nodes":
+        [
+            {
+                "type": "board",
+                "board_type": "p520_hpc_sg280l",
+                "children":
+                [
+                    {
+                        "type": "globalmem",
+                        "global_memory_name": "DDR",
+                        "max_theoretical_globalmem_bw": "76800",
+                        "max_burst_count": "16"
+                    }
+                ]
+            }
+        ]
+    },
+    "memtransfers":
+    {
+        "nodes":
+        [
+            {
+                "type": "memtransfers",
+                "type_transfer": ".mem_transfer",
+                "device_id": "0",
+                "command_queue_id": "2",
+                "start_time": "758787736184304",
+                "end_time": "758787906964274"
+            },
+            {
+                "type": "memtransfers",
+                "type_transfer": ".mem_transfer",
+                "device_id": "0",
+                "command_queue_id": "3",
+                "start_time": "758787911643789",
+                "end_time": "758788252527659"
+            },
+            {
+                "type": "memtransfers",
+                "type_transfer": ".mem_transfer",
+                "device_id": "0",
+                "command_queue_id": "2",
+                "start_time": "758788255369011",
+                "end_time": "758788425917010"
+            },
+            {
+                "type": "memtransfers",
+                "type_transfer": ".mem_transfer",
+                "device_id": "0",
+                "command_queue_id": "3",
+                "start_time": "758788428145768",
+                "end_time": "758788768788905"
+            },
+            {
+                "type": "memtransfers",
+                "type_transfer": ".mem_transfer",
+                "device_id": "0",
+                "command_queue_id": "2",
+                "start_time": "758788770914380",
+                "end_time": "758788941556203"
+            },
+            {
+                "type": "memtransfers",
+                "type_transfer": ".mem_transfer",
+                "device_id": "0",
+                "command_queue_id": "3",
+                "start_time": "758788943870322",
+                "end_time": "758789284597028"
+            },
+            {
+                "type": "memtransfers",
+                "type_transfer": ".mem_transfer",
+                "device_id": "0",
+                "command_queue_id": "2",
+                "start_time": "758797118009480",
+                "end_time": "758797288602449"
+            },
+            {
+                "type": "memtransfers",
+                "type_transfer": ".mem_transfer",
+                "device_id": "0",
+                "command_queue_id": "3",
+                "start_time": "758797291581203",
+                "end_time": "758797457676402"
+            },
+            {
+                "type": "memtransfers",
+                "type_transfer": ".mem_transfer",
+                "device_id": "0",
+                "command_queue_id": "2",
+                "start_time": "758797459875269",
+                "end_time": "758797630625491"
+            },
+            {
+                "type": "memtransfers",
+                "type_transfer": ".mem_transfer",
+                "device_id": "0",
+                "command_queue_id": "3",
+                "start_time": "758797632682493",
+                "end_time": "758797798792593"
+            },
+            {
+                "type": "memtransfers",
+                "type_transfer": ".mem_transfer",
+                "device_id": "0",
+                "command_queue_id": "2",
+                "start_time": "758797801679535",
+                "end_time": "758797971966723"
+            },
+            {
+                "type": "memtransfers",
+                "type_transfer": ".mem_transfer",
+                "device_id": "0",
+                "command_queue_id": "3",
+                "start_time": "758797975017164",
+                "end_time": "758798140864529"
+            }
+        ]
+    },
+    "channels":
+    {
+        "nodes": ""
+    },
+    "run_info":
+    {
+        "nodes":
+        [
+            {
+                "type": "runinfo",
+                "fmax": "394.444444444"
+            }
+        ]
+    }
+}

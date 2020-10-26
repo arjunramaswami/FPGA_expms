@@ -33,6 +33,7 @@ int main(int argc, const char **argv) {
     OPT_INTEGER('n',"n", &N, "Data Size"),
     OPT_INTEGER('i',"iter", &iter, "Iterations"),
     OPT_BOOLEAN('t',"interleaving", &interleaving, "Use burst interleaving in case of BRAM designs"),
+    OPT_INTEGER('c',"batch", &batch, "Batch"),
     OPT_STRING('p', "path", &path, "Path to bitstream"),
     OPT_BOOLEAN('e', "emu", &use_emulator, "Use emulator"),
     OPT_END(),
@@ -55,14 +56,14 @@ int main(int argc, const char **argv) {
     //platform = "Intel(R) FPGA";
   }
   
-  int isInit = fpga_initialize_withBuf(platform, path, use_svm, N);
+  int isInit = fpga_initialize(platform, path, use_svm);
   if(isInit != 0){
     fprintf(stderr, "FPGA initialization error %d\n", isInit);
     return EXIT_FAILURE;
   }
 
   // create and use same data every iteration
-  size_t inp_sz = sizeof(float2) * N;
+  size_t inp_sz = sizeof(float2) * N * batch;
   float2 *inp = (float2*)fpgaf_complex_malloc(inp_sz);
   float2 *out = (float2*)fpgaf_complex_malloc(inp_sz);
 
@@ -70,7 +71,7 @@ int main(int argc, const char **argv) {
     fpga_t timing = {0.0, 0.0, 0.0, 0};
     double temp_timer = 0.0;
 
-    status = create_data(inp, N);
+    status = create_data(inp, N * batch);
     if(!status){
       fprintf(stderr, "Error in Data Creation \n");
       free(inp);
@@ -79,10 +80,10 @@ int main(int argc, const char **argv) {
     }
 
     temp_timer = getTimeinMilliseconds();
-    timing = fpga_test_bufPersist(N, inp, out, interleaving);
+    timing = nb_pcie_test(N, inp, out, interleaving, batch);
     total_api_time += getTimeinMilliseconds() - temp_timer;
 
-    if(!verify_output(inp, out, N)){
+    if(!verify_output(inp, out, N * batch)){
       fprintf(stderr, "Verification Failed \n");
       free(inp);
       free(out);
@@ -112,7 +113,7 @@ int main(int argc, const char **argv) {
   free(out);
 
   // destroy fpga state
-  fpga_final_withBuf();
+  fpga_final();
 
   // display performance measures
   display_measures(total_api_time, avg_rd, avg_wr, avg_exec, N, iter);
